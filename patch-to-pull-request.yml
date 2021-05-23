@@ -9,7 +9,7 @@ jobs:
       - name: Create commits
         run: |
           printf "${{ github.event.client_payload.patch }}" | base64 -d | git apply
-          echo "name=${{ github.event.client_payload.name || "unnamed.patch" }}" >> $GITHUB_ENV
+          echo "name=${{ github.event.client_payload.name || 'unnamed.patch' }}" >> $GITHUB_ENV
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
