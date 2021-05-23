@@ -11,11 +11,10 @@ jobs:
           printf "${{ github.event.client_payload.patch }}" | base64 -d > a.patch
           git apply a.patch
           printf "PATCH_NAME=${{ github.event.client_payload.name || '(unnamed)' }}" >> $GITHUB_ENV
-          printf "PATCH_SHA1=$(sha1sum a.patch)" >> $GITHUB_ENV
-          printf "PATCH_DIFF_STAT=$(git diff --stat)" >> $GITHUB_ENV
+          printf "PATCH_SHA1=$(sha1sum a.patch | cut -f 1 -d ' ' | head -c 5)" >> $GITHUB_ENV
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
          commit-message: "Apply patch ${{ env.PATCH_NAME }}"
          title: "Apply patch ${{ env.PATCH_NAME }} ${{ env.PATCH_SHA1 }} [patch-to-pull-request]"
-         body: "Application of patch ${{ env.PATCH_DIFF_STAT }}"
+         body: "Application of patch"
