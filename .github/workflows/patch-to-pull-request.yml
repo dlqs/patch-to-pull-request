@@ -18,3 +18,4 @@ jobs:
          commit-message: "Apply patch ${{ env.PATCH_NAME }}"
          title: "Apply patch ${{ env.PATCH_NAME }} ${{ env.PATCH_SHA1 }} [patch-to-pull-request]"
          body: "Application of patch"
+         branch: "patch-${{ env.PATCH_SHA1 }}"
