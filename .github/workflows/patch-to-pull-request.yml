@@ -1,0 +1,41 @@
+name: patch-to-pull-request
+on:
+ repository_dispatch:
+jobs:
+  patch-to-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Apply patch
+        id: apply_patch
+        run: |
+          printf "${{ github.event.client_payload.patch }}" | base64 -d > a.patch
+          git apply a.patch
+          echo "PATCH_NAME=${{ github.event.client_payload.name || '(unnamed patch)' }}" >> $GITHUB_ENV
+          echo "PATCH_SHA1=$(sha1sum a.patch | cut -f 1 -d ' ')" >> $GITHUB_ENV
+          echo "PATCH_SHORT_SHA1=$(sha1sum a.patch | cut -f 1 -d ' ' | head -c 5)" >> $GITHUB_ENV
+          echo "PATCH_DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+          echo "PATCH_FILE<<EOF" >> $GITHUB_ENV
+          cat a.patch >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+         commit-message: "Apply patch ${{ env.PATCH_NAME }}"
+         title: "[patch-to-pull-request]: ${{ env.PATCH_NAME }} ${{ env.PATCH_SHORT_SHA1 }}@${{ env.PATCH_DATE }}"
+         branch: "patch-${{ env.PATCH_SHA1 }}"
+         body: |
+           ### Patch details  
+           
+           Name: ${{ env.PATCH_NAME }}  
+           SHA-1: ${{ env.PATCH_SHA1 }}  
+           Submitted at: ${{ env.PATCH_DATE }}  
+           
+           Patch file:  
+           
+           ---
+           
+           ${{ env.PATCH_FILE }}
+           
+           ---
+            - The patch SHA is used as the idempotency key for each pull request.
