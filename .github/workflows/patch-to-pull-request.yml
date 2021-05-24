@@ -26,13 +26,11 @@ jobs:
          branch: "patch-${{ env.PATCH_SHA1 }}"
          body: |
            ## Patch details
-           name: ${{ env.PATCH_NAME }}  
-           sha1: ${{ env.PATCH_SHA1 }}  
-           first submitted at: ${{ env.PATCH_DATE }}
+           Name: ${{ env.PATCH_NAME }}  
+           SHA-1: ${{ env.PATCH_SHA1 }}  
+           First submitted at: ${{ env.PATCH_DATE }}
            <details><summary>Click to view patch file</summary>
-           ```
            ${{ env.PATCH_FILE }}
-           ```
            </details>
            
-            - The patch SHA is used as the idempotency key for each PR
+            - The patch SHA is used as the idempotency key for each pull request
