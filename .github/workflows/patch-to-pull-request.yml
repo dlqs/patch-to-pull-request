@@ -21,7 +21,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
          commit-message: "Apply patch ${{ env.PATCH_NAME }}"
-         title: "[patch-to-pull-request]:${{ env.PATCH_NAME }} (${{ env.PATCH_SHA1.substring(0, 6) }}) at ${{ env.PATCH_DATE }}"
+         title: "[patch-to-pull-request]:${{ env.PATCH_NAME }} ${{ env.PATCH_SHA1.substring(0, 6) }} at ${{ env.PATCH_DATE }}"
          branch: "patch-${{ github.sha }}"
          body: >
            Applying patch
