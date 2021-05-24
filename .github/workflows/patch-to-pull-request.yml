@@ -13,7 +13,7 @@ jobs:
           git apply a.patch
           echo "PATCH_NAME=${{ github.event.client_payload.name || '(unnamed)' }}" >> $GITHUB_ENV
           echo "PATCH_SHA1=$(sha1sum a.patch | cut -f 1 -d ' ')" >> $GITHUB_ENV
-          echo "PATCH_SHORT_SHA1=$($PATCH_SHA1 | head -c 5)" >> $GITHUB_ENV
+          echo "PATCH_SHORT_SHA1=$(sha1sum a.patch | cut -f 1 -d ' ' | head -c 5)" >> $GITHUB_ENV
           echo "PATCH_DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
           echo "PATCH_FILE<<EOF" >> $GITHUB_ENV
           cat a.patch >> $GITHUB_ENV
