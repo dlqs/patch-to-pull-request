@@ -23,9 +23,10 @@ jobs:
         with:
          commit-message: "Apply patch ${{ env.PATCH_NAME }}"
          title: "[patch-to-pull-request]: ${{ env.PATCH_NAME }} sha:${{ env.PATCH_SHORT_SHA1 }} at ${{ env.PATCH_DATE }}"
-         branch: "patch-${{ github.sha }}"
+         branch: "patch-${{ env.PATCH_SHA1 }}"
          body: >
            ## Patch details
+           
            name: ${{ env.PATCH_NAME }}  
            sha1: ${{ env.PATCH_SHA1 }}  
            github_sha (commit SHA that triggered the workflow): ${{ github.sha }}  
