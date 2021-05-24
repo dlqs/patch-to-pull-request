@@ -11,25 +11,22 @@ jobs:
         run: |
           printf "${{ github.event.client_payload.patch }}" | base64 -d > a.patch
           git apply a.patch
-          printf "PATCH_NAME=${{ github.event.client_payload.name || '(unnamed)' }}\n" >> $GITHUB_ENV
-          printf "PATCH_SHA1=%b\n" $(sha1sum a.patch | cut -f 1 -d ' ') >> $GITHUB_ENV
-          #printf "PATCH_DATE=%b" $(date +'%Y-%m-%dT%H:%M:%S') >> $GITHUB_ENV
-          #printf "PATCH_DATE=%b" $(date +'%Y-%m-%dT%H:%M:%S') >> $GITHUB_ENV
+          echo "PATCH_NAME=${{ github.event.client_payload.name || '(unnamed)' }}" >> $GITHUB_ENV
+          echo "PATCH_SHA1=$(sha1sum a.patch | cut -f 1 -d ' ')" >> $GITHUB_ENV
           echo "PATCH_DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-          echo 'PATCH_FILE<<EOF' >> $GITHUB_ENV
+          echo "PATCH_FILE<<EOF" >> $GITHUB_ENV
           cat a.patch >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
          commit-message: "Apply patch ${{ env.PATCH_NAME }}"
          title: "Apply patch ${{ env.PATCH_NAME }} ${{ env.PATCH_SHA1 }} [patch-to-pull-request]"
-         branch: "patch-${{ env.PATCH_SHA1 }}-${{ env.PATCH_DATE }}"
+         branch: "patch-$GITHUB_SHA"
          body: >
            Applying patch
            <details><summary>Click to view patch file</summary>
            ```
-           ${{ toJSON(env) }}
            ${{ env.PATCH_FILE }}
            ```
            </details>
