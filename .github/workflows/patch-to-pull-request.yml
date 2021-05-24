@@ -13,6 +13,7 @@ jobs:
           git apply a.patch
           echo "PATCH_NAME=${{ github.event.client_payload.name || '(unnamed)' }}" >> $GITHUB_ENV
           echo "PATCH_SHA1=$(sha1sum a.patch | cut -f 1 -d ' ')" >> $GITHUB_ENV
+          echo "PATCH_SHORT_SHA1=$($PATCH_SHA1 | head -c 5)" >> $GITHUB_ENV
           echo "PATCH_DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
           echo "PATCH_FILE<<EOF" >> $GITHUB_ENV
           cat a.patch >> $GITHUB_ENV
@@ -21,7 +22,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
          commit-message: "Apply patch ${{ env.PATCH_NAME }}"
-         title: "[patch-to-pull-request]:${{ env.PATCH_NAME }} ${{ env.PATCH_SHA1.substring(0, 6) }} at ${{ env.PATCH_DATE }}"
+         title: "[patch-to-pull-request]:${{ env.PATCH_NAME }} ${{ env.PATCH_SHORT_SHA1 }} at ${{ env.PATCH_DATE }}"
          branch: "patch-${{ github.sha }}"
          body: >
            Applying patch
