@@ -25,12 +25,12 @@ jobs:
          title: "[patch-to-pull-request]: ${{ env.PATCH_NAME }} sha:${{ env.PATCH_SHORT_SHA1 }} at ${{ env.PATCH_DATE }}"
          branch: "patch-${{ env.PATCH_SHA1 }}"
          body: |
-           ## Patch details
+           ### Patch details
            Name: ${{ env.PATCH_NAME }}  
            SHA-1: ${{ env.PATCH_SHA1 }}  
-           First submitted at: ${{ env.PATCH_DATE }}
-           <details><summary>Click to view patch file</summary>
+           Submitted at: ${{ env.PATCH_DATE }}
+           ---
+           Patch file:  
            ${{ env.PATCH_FILE }}
-           </details>
-           
-            - The patch SHA is used as the idempotency key for each pull request
+           ---
+            - The patch SHA is used as the idempotency key for each pull request.
