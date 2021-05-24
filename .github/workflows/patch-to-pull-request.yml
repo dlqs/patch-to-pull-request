@@ -26,9 +26,10 @@ jobs:
          branch: "patch-${{ github.sha }}"
          body: >
            ## Patch details
-           name: ${{ env.PATCH_NAME }}
-           sha1: ${{ env.PATCH_SHA1 }}
-           github_sha (commit SHA that triggered the workflow): ${{ github.sha }}
+           name: ${{ env.PATCH_NAME }}  
+           sha1: ${{ env.PATCH_SHA1 }}  
+           github_sha (commit SHA that triggered the workflow): ${{ github.sha }}  
+           
            <details><summary>Click to view patch file</summary>
            ```
            ${{ env.PATCH_FILE }}
