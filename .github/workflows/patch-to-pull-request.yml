@@ -35,4 +35,4 @@ jobs:
            ```
            </details>
            
-            - Patch SHA1s are used as their idempotency keys 
+            - The patch SHA is used as the idempotency key for each PR
