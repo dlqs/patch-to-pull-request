@@ -16,7 +16,9 @@ jobs:
           #printf "PATCH_DATE=%b" $(date +'%Y-%m-%dT%H:%M:%S') >> $GITHUB_ENV
           #printf "PATCH_DATE=%b" $(date +'%Y-%m-%dT%H:%M:%S') >> $GITHUB_ENV
           echo "PATCH_DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-          echo "::set-output name=patch::$(cat a.patch)"
+          echo 'PATCH_FILE<<EOF' >> $GITHUB_ENV
+          cat a.patch >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
@@ -25,6 +27,8 @@ jobs:
          branch: "patch-${{ env.PATCH_SHA1 }}-${{ env.PATCH_DATE }}"
          body: >
            Applying patch
-           <details><summary>Patch file</summary>
-             ${{ steps.apply_patch.outputs.patch }}
+           <details><summary>Click to view patch file</summary>
+           ```
+           ${{ env.PATCH_FILE }}
+           ```
            </details>
