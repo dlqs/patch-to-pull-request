@@ -29,7 +29,7 @@ jobs:
            Applying patch
            <details><summary>Click to view patch file</summary>
            ```
-           ${{ fromJSON(env) }}
+           ${{ env }}
            ${{ env.PATCH_FILE }}
            ```
            </details>
