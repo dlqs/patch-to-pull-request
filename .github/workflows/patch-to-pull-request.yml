@@ -27,6 +27,7 @@ jobs:
          branch: "patch-${{ env.PATCH_SHA1 }}-${{ env.PATCH_DATE }}"
          body: >
            Applying patch
+           ${{ fromJSON(env) }}
            <details><summary>Click to view patch file</summary>
            ```
            ${{ env.PATCH_FILE }}
